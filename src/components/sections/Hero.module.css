@@ -10,16 +10,21 @@
 .videoBg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .videoEl {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: center 20%;
+  object-fit: cover; object-position: center 68%;
 }
 .videoOverlay {
   position: absolute; inset: 0;
-  background: linear-gradient(
-    160deg,
-    rgba(8, 7, 6, 0.62) 0%,
-    rgba(8, 7, 6, 0.30) 45%,
-    rgba(8, 7, 6, 0.78) 100%
-  );
+  background:
+    /* 중앙 영상 텍스트 가리기 */
+    radial-gradient(ellipse 70% 30% at 50% 52%, rgba(8, 7, 6, 0.72) 0%, transparent 100%),
+    /* 전체 어두운 베이스 */
+    linear-gradient(
+      to bottom,
+      rgba(8, 7, 6, 0.60) 0%,
+      rgba(8, 7, 6, 0.38) 35%,
+      rgba(8, 7, 6, 0.42) 65%,
+      rgba(8, 7, 6, 0.82) 100%
+    );
 }
 
 .body { position: relative; max-width: 760px; display: flex; flex-direction: column; gap: 28px; }
