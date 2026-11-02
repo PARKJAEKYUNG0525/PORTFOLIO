@@ -23,7 +23,7 @@ export default function Hero({ onOpen }: { onOpen: (i: number) => void }) {
   // 3D 사용 여부 결정: reduced-motion · WebGL 미지원이면 정적 이미지
   useEffect(() => {
     setQuality(detectQuality());
-    setUse3D(!prefersReducedMotion() && hasWebGL());
+    setUse3D(hasWebGL());
   }, []);
 
   // 화면 밖이면 렌더 루프 정지 (pin이 끝난 뒤)
