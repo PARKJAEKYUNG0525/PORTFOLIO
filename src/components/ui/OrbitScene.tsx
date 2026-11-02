@@ -60,7 +60,7 @@ function Planet({ quality, snapshot }: { quality: OrbitQuality; snapshot: boolea
       <group ref={spin}>
         {/* 유리 구체 */}
         <mesh>
-          <sphereGeometry args={[1, low ? 48 : 96, low ? 48 : 96]} />
+          <sphereGeometry args={[1, low ? 64 : 96, low ? 64 : 96]} />
           <MeshTransmissionMaterial
             samples={low ? 3 : 8}
             resolution={low ? 256 : 768}
@@ -120,9 +120,9 @@ export default function OrbitScene({ quality, active = true, snapshot = false, o
   return (
     <Canvas
       frameloop={active ? 'always' : 'never'}
-      dpr={snapshot ? 2 : low ? [1, 1.5] : [1, 2]}
+      dpr={snapshot ? 2 : [1, 2]}
       camera={{ fov: FOV, position: [0, 0, DIST], near: 0.1, far: 50 }}
-      gl={{ alpha: true, antialias: !low, powerPreference: 'high-performance', preserveDrawingBuffer: snapshot }}
+      gl={{ alpha: true, antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: snapshot }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.setClearColor(0x000000, 0);

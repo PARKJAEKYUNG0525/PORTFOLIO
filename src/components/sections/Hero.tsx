@@ -5,7 +5,7 @@ import { PROFILE } from '../../data/profile';
 import { PROJECTS } from '../../data/projects';
 import { onAnchorClick, prefersReducedMotion } from '../../hooks/useLenis';
 import { Stars } from '../ui/Orbit';
-import { detectQuality, hasWebGL, orbitLayout, orbitState, type OrbitQuality } from '../ui/orbitState';
+import { detectQuality, hasWebGL, orbitState, type OrbitQuality } from '../ui/orbitState';
 import styles from './Hero.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,7 +13,6 @@ gsap.registerPlugin(ScrollTrigger);
 // three.js는 무거우므로 첫 화면 이후 별도 청크로 로드
 const OrbitScene = lazy(() => import('../ui/OrbitScene'));
 
-const STATIC_SRC = '/assets/orbit-static.webp';
 
 export default function Hero({ onOpen }: { onOpen: (i: number) => void }) {
   const root = useRef<HTMLElement>(null);
@@ -21,21 +20,10 @@ export default function Hero({ onOpen }: { onOpen: (i: number) => void }) {
   const [ready, setReady] = useState(false);
   const [active, setActive] = useState(true);
   const [quality, setQuality] = useState<OrbitQuality>('high');
-  const [box, setBox] = useState({ w: 1440, h: 900 });
-
   // 3D 사용 여부 결정: reduced-motion · WebGL 미지원이면 정적 이미지
   useEffect(() => {
     setQuality(detectQuality());
     setUse3D(!prefersReducedMotion() && hasWebGL());
-  }, []);
-
-  // Hero 크기 추적 → 정적 이미지 위치를 3D와 같은 규칙으로 계산
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => setBox({ w: el.clientWidth, h: el.clientHeight }));
-    ro.observe(el);
-    return () => ro.disconnect();
   }, []);
 
   // 화면 밖이면 렌더 루프 정지 (pin이 끝난 뒤)
@@ -99,8 +87,6 @@ export default function Hero({ onOpen }: { onOpen: (i: number) => void }) {
     };
   }, []);
 
-  const L = orbitLayout(box.w, box.h);
-
   return (
     <section id="top" ref={root} className={styles.hero} aria-label="소개">
       <div className={styles.stars} aria-hidden="true">
@@ -109,21 +95,6 @@ export default function Hero({ onOpen }: { onOpen: (i: number) => void }) {
 
       <div className={styles.scene} aria-hidden="true">
         <div className={styles.sceneIn}>
-          {/* 정적 대체 이미지: reduced-motion · WebGL 미지원 · 3D 로딩 전 */}
-          <img
-            src={STATIC_SRC}
-            alt=""
-            className={styles.staticImg}
-            style={{
-              left: L.cx - L.size / 2,
-              top: L.cy - L.size / 2,
-              width: L.size,
-              height: L.size,
-              opacity: use3D && ready ? 0 : 1,
-            }}
-            decoding="async"
-            fetchPriority="high"
-          />
           {use3D && (
             <Suspense fallback={null}>
               <div className={styles.canvas} style={{ opacity: ready ? 1 : 0 }}>

@@ -63,7 +63,7 @@ export const PROJECTS: Project[] = [
     metric: 'NLP + Graph + LLM Agent',
     metricLabel: 'spaCy · NetworkX PageRank · KURE-v1 · LangGraph',
     summary:
-      '회의 녹음 하나로 액션 아이템, 빠진 논의, 용어 충돌을 자동으로 찾아 Slack으로 알려주는 회의 인텔리전스 서비스.',
+      '회의 녹음 하나로 할 일, 빠진 논의, 번복된 결정을 자동으로 찾아 Slack으로 알려주는 회의 인텔리전스 서비스.',
     tags: ['Next.js', 'FastAPI', 'spaCy', 'KURE-v1', 'NetworkX', 'Gemini API', 'LangGraph', 'PostgreSQL · pgvector', 'Slack API', 'Google Calendar', 'AWS'],
     meta: [
       { k: 'PERIOD', v: '2026.09.08 — 10.20' },
@@ -72,19 +72,19 @@ export const PROJECTS: Project[] = [
       { k: 'GITHUB', v: 'AI-X-16-1/AUTUNE' },
     ],
     problem: '회의가 끝나면 무엇을 정했고 무엇을 놓쳤는지 흐려집니다.',
-    solution: '녹음에서 액션 아이템, 빠진 논의, 용어 충돌을 찾아 팀에 알립니다. 동의한 참석자의 발화만 분석합니다.',
-    flow: '오디오 → 구조화 추출 → 갭 탐지 → 컨텍스트 → 인텔리전스, 5개 모듈 파이프라인',
+    solution: '녹음에서 할 일, 빠진 논의, 번복된 결정을 찾아 팀에 알립니다. 동의한 참석자의 발화만 분석합니다.',
+    flow: '음성 → 대본 → 할 일·결정 추출 → 누락 논의 탐지 → 회의 간 맥락 연결 → 인텔리전스, 5개 모듈 파이프라인',
     video: '/assets/autune-demo.mp4',
     pipelines: [
       {
         title: '모듈 파이프라인',
         desc: '5개 모듈을 1인 1모듈 풀스택으로 개발, 모듈 간 계약(GapReport.measured)으로 연동',
         steps: [
-          { name: 'A · 오디오', tool: 'Audio', lines: ['회의 녹음 입력', '동의한 참석자의 발화만 텍스트화'], mine: false },
-          { name: 'B · 구조화 추출', tool: 'Extraction', lines: ['액션 아이템 · 결정 사항 정리'], mine: false },
-          { name: 'C · 갭 탐지', tool: 'MY PART', lines: ['논의되지 않은 항목 탐지', '개체·관계 추출 → 토픽 그래프 → 템플릿 대조 → 리스크 스코어링'], mine: true },
-          { name: 'D · 컨텍스트', tool: 'Context', lines: ['맥락 정리 · 용어 충돌 탐지'], mine: false },
-          { name: 'E · 인텔리전스', tool: 'Dashboard', lines: ['대시보드 · 점수 집계'], mine: false },
+          { name: 'A · 음성 → 대본', tool: 'Whisper · pyannote 3.1', lines: ['hotwords로 용어 정확도 31% → 86%', '화자 분리 오류율 14%, 분리 후 원본 음성 즉시 삭제', '개인정보 마스킹 누락 28건 → 1건', '1초 침묵 기준 실시간 전사, 표시 7초 → 1.7초'], mine: false },
+          { name: 'B · 할 일·결정 추출', tool: 'LLM + 규칙', lines: ['LLM으로 할 일 · 결정 분류', '담당자 · 기한은 규칙으로 채움', '사람이 확인한 항목만 내보냄'], mine: false },
+          { name: 'C · 누락 논의 탐지', tool: 'MY PART', lines: ['spaCy 개체 추출 · 규칙 + LLM 관계 추출', 'NetworkX 토픽 그래프 — PageRank · 매개 중심성', 'KURE-v1 임베딩 + LLM으로 팀 템플릿 대조', '위험도 점수 계산 후 결과 전달'], mine: true },
+          { name: 'D · 회의 간 맥락 연결', tool: 'KURE-v1 · BM25 · bge-reranker', lines: ['임베딩 + BM25로 과거 회의 후보 탐색', 'bge-reranker로 같은 안건 연결', 'LLM은 연결 확정 직전만, 안건당 1회 호출', 'NLI + 번복 단서로 결정 유지 · 수정 · 번복 판정'], mine: false },
+          { name: 'E · 인텔리전스', tool: 'Dashboard', lines: ['B · C · D 결과 종합, 회의별 A~F 등급', '주간 리포트 생성', '재논의 가능성 높은 결정 예측'], mine: false },
           { name: 'Slack 알림', tool: 'Slack App', lines: ['갭 질문 · 리포트 전달'], mine: false },
         ],
       },
