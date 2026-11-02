@@ -1,0 +1,30 @@
+import { PROFILE } from '../../data/profile';
+import { onAnchorClick } from '../../hooks/useLenis';
+import styles from './Header.module.css';
+
+const LINKS = [
+  { href: '#work', label: 'Work' },
+  { href: '#about', label: 'About' },
+  { href: '#journey', label: 'Journey' },
+];
+
+export default function Header() {
+  return (
+    <header className={styles.header}>
+      <a href="#top" className={styles.brand} onClick={onAnchorClick} aria-label={`${PROFILE.name} — 맨 위로`}>
+        <span className={styles.dot} aria-hidden="true" />
+        <span>{PROFILE.name}</span>
+      </a>
+      <nav className={styles.nav} aria-label="주요 메뉴">
+        {LINKS.map((l) => (
+          <a key={l.href} href={l.href} className={styles.link} onClick={onAnchorClick}>
+            {l.label}
+          </a>
+        ))}
+        <a href="#contact" className="pill pill--sm" onClick={onAnchorClick}>
+          Let’s talk
+        </a>
+      </nav>
+    </header>
+  );
+}

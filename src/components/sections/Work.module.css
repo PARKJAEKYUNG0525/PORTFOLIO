@@ -1,0 +1,21 @@
+.list { display: flex; flex-direction: column; border-top: 1px solid var(--border); margin-top: 56px; }
+
+.hint { display: none; }
+
+@media (max-width: 720px) {
+  .list {
+    flex-direction: row; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+    border-top: 0; margin: 40px calc(var(--gutter) * -1) 0;
+    padding: 0 var(--gutter) 8px; scroll-padding-inline: var(--gutter);
+    scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .list::-webkit-scrollbar { display: none; }
+
+  .hint {
+    display: flex; justify-content: space-between; align-items: center; margin-top: 18px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: var(--text-3);
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 6px; height: 6px; border-radius: 3px; background: var(--border-2); transition: background .25s, width .25s; }
+  .on { background: var(--accent); width: 18px; }
+}

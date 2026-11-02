@@ -1,0 +1,22 @@
+.about { background: radial-gradient(1200px 600px at 85% 0%, oklch(0.3 0.06 235 / 0.35), transparent 70%); }
+
+.top { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; margin-top: 28px; align-items: end; }
+.top h2 { margin: 0; }
+.top p { line-height: 1.7; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 64px; }
+.card {
+  display: flex; flex-direction: column; gap: 14px; padding: 28px;
+  border: 1px solid var(--border); border-radius: var(--radius-lg); background: #0d1014cc;
+  transition: border-color .3s;
+}
+.card:hover { border-color: oklch(0.82 0.1 235 / 0.4); }
+.cardNo { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+.card h3 { margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 650; }
+.card p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+
+.skillsBlock { margin-top: 96px; }
+.skills { margin-top: 20px; border-top: 1px solid var(--border); }
+.row { display: flex; flex-wrap: wrap; gap: 12px 32px; padding: 22px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.group { flex: 0 0 220px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: var(--text-3); padding-top: 6px; }
+.items { flex: 1 1 360px; min-width: 0; display: flex; flex-wrap: wrap; gap: 8px; }
