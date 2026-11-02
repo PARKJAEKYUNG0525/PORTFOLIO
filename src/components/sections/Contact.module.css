@@ -2,7 +2,7 @@
   overflow: hidden;
   padding-top: clamp(100px, 14vw, 200px);
   padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
-  background: radial-gradient(900px 500px at 50% 110%, oklch(0.35 0.08 235 / 0.45), transparent 70%);
+  background: radial-gradient(900px 500px at 50% 110%, rgba(212, 132, 26, 0.16), transparent 70%);
 }
 
 .top {

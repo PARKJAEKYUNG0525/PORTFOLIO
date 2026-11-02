@@ -1,0 +1,43 @@
+.bg {
+  position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  --gx: 85%; --gy: 0%; --lx: 70%;
+}
+.bg[data-glow='tl'] { --gx: 10%; --gy: 0%;   --lx: 8%; }
+.bg[data-glow='tr'] { --gx: 88%; --gy: 0%;   --lx: 72%; }
+.bg[data-glow='bl'] { --gx: 8%;  --gy: 100%; --lx: 20%; }
+.bg[data-glow='br'] { --gx: 92%; --gy: 100%; --lx: 60%; }
+
+/* 액센트(앰버) 글로우 */
+.glow {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(900px 520px at var(--gx) var(--gy), rgba(212, 132, 26, 0.13), transparent 70%),
+    radial-gradient(700px 420px at calc(100% - var(--gx)) calc(100% - var(--gy)), rgba(232, 156, 44, 0.05), transparent 70%);
+}
+
+/* 점 그리드 — 글로우 쪽에서만 보이게 마스크 */
+.dots {
+  position: absolute; inset: 0; opacity: .5;
+  background-image: radial-gradient(rgba(255, 240, 210, 0.16) 1px, transparent 1.2px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(640px 420px at var(--gx) var(--gy), #000, transparent 75%);
+  mask-image: radial-gradient(640px 420px at var(--gx) var(--gy), #000, transparent 75%);
+}
+
+.stars { position: absolute; inset: 0; opacity: .35; }
+
+/* 섹션 상단 보더 위 짧은 하이라이트 */
+.line {
+  position: absolute; top: -1px; left: var(--lx); width: min(320px, 40%); height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .7;
+}
+
+@media (max-width: 720px) {
+  .glow {
+    background:
+      radial-gradient(420px 320px at var(--gx) var(--gy), rgba(212, 132, 26, 0.14), transparent 70%);
+  }
+  .dots { background-size: 22px 22px; }
+}

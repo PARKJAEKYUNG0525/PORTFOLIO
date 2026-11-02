@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { PROJECTS } from '../../data/projects';
 import ProjectCard from '../ui/ProjectCard';
 import styles from './Work.module.css';
+import SectionBg from '../ui/SectionBg';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -20,6 +21,7 @@ export default function Work({ onOpen }: { onOpen: (i: number) => void }) {
 
   return (
     <section id="work" className="section" aria-labelledby="work-title">
+      <SectionBg glow="tl" />
       <div className="eyebrow" data-reveal>
         <span>SELECTED WORK / 01</span>
         <span>01 — {pad(PROJECTS.length)}</span>

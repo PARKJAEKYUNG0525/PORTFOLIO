@@ -1,9 +1,11 @@
 import { CERTS, JOURNEY } from '../../data/profile';
 import styles from './Journey.module.css';
+import SectionBg from '../ui/SectionBg';
 
 export default function Journey() {
   return (
     <section id="journey" className="section" aria-labelledby="journey-title">
+      <SectionBg glow="bl" />
       <div className="eyebrow" data-reveal>
         <span>EXPERIENCE · EDUCATION</span>
         <span>03</span>

@@ -1,9 +1,11 @@
 import { COMPETENCIES, SKILLS } from '../../data/profile';
 import styles from './About.module.css';
+import SectionBg from '../ui/SectionBg';
 
 export default function About() {
   return (
-    <section id="about" className={`section ${styles.about}`} aria-labelledby="about-title">
+    <section id="about" className="section" aria-labelledby="about-title">
+      <SectionBg glow="tr" />
       <div className="eyebrow" data-reveal>
         <span>ABOUT / CORE COMPETENCIES</span>
         <span>02</span>

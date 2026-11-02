@@ -108,12 +108,11 @@ export const PROJECTS: Project[] = [
       },
     ],
     arch: [
-      { k: 'Client', v: '브라우저' },
-      { k: 'Frontend', v: 'Next.js · 모듈별 화면' },
-      { k: 'Backend', v: 'FastAPI · 모듈 A–E' },
-      { k: 'Database', v: 'PostgreSQL · pgvector' },
-      { k: 'External', v: 'Slack App · Google Calendar' },
-      { k: 'Deploy', v: 'Docker 컨테이너 · 사내 유휴 PC 서버' },
+      { k: 'CDN · Frontend', v: 'CloudFront → S3 (Next.js · 모듈별 화면)' },
+      { k: 'Load balancer', v: 'ALB' },
+      { k: 'Backend', v: 'ECS Fargate · FastAPI 모듈 A–E (ECR 이미지)' },
+      { k: 'Database', v: 'RDS PostgreSQL · pgvector' },
+      { k: 'External', v: 'Gemini API · Slack App · Google Calendar' },
     ],
     tasks: [
       { t: '갭 탐지 파이프라인', d: '개체·관계 추출, NetworkX PageRank 토픽 그래프, 팀 템플릿 대조, 리스크 스코어링 순으로 빠진 논의 탐지' },
@@ -128,7 +127,7 @@ export const PROJECTS: Project[] = [
       { k: 'Agent', v: 'LangGraph' },
       { k: 'Database', v: 'PostgreSQL + pgvector' },
       { k: '연동', v: 'Slack App (Block Kit), Google Calendar' },
-      { k: 'Deploy', v: 'Docker' },
+      { k: 'Deploy', v: 'S3 · CloudFront, ECR · ECS Fargate · ALB, RDS' },
     ],
     troubles: [
       {

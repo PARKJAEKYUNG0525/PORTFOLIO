@@ -76,7 +76,7 @@ img, video { display: block; max-width: 100%; }
 .accent { color: var(--accent); }
 
 .section {
-  position: relative;
+  position: relative; isolation: isolate;
   padding: var(--section-pad) var(--gutter);
   border-top: 1px solid var(--border-soft);
 }

@@ -1,10 +1,12 @@
 import { CONTACTS, PROFILE, PROFILE_INFO } from '../../data/profile';
 import { onAnchorClick } from '../../hooks/useLenis';
 import styles from './Contact.module.css';
+import SectionBg from '../ui/SectionBg';
 
 export default function Contact() {
   return (
     <section id="contact" className={`section ${styles.contact}`} aria-labelledby="contact-title">
+      <SectionBg glow="br" />
       <div className={styles.top}>
         <div>
           <div className="eyebrow" data-reveal>

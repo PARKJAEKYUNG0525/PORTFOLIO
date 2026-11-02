@@ -24,24 +24,15 @@ export default function Hero() {
         .from([q('role'), q('intro'), q('cta')], { y: 32, opacity: 0, duration: 1.3, stagger: 0.1 }, 0.6)
         .from(q('scrollHint'), { y: 16, opacity: 0, duration: 1.2 }, 1.2);
 
-      // Hero pin: 스크롤하면 텍스트가 빠지고 영상이 페이드아웃
-      const mobile = window.matchMedia('(max-width: 720px)').matches;
+      // pin 없이 자연스럽게 스크롤 — 살짝만 내려도 다음 섹션이 바로 보이게 (PC · 모바일 공통)
       gsap
         .timeline({
           defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: root.current,
-            start: 'top top',
-            end: mobile ? '+=90%' : '+=130%',
-            scrub: 0.8,
-            pin: true,
-            anticipatePin: 1,
-          },
+          scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: 0.5 },
         })
-        .to(q('body'), { y: -90, opacity: 0, duration: 0.45, ease: 'power2.in' }, 0)
-        .to(q('scrollHint'), { opacity: 0, duration: 0.15 }, 0)
-        .to(q('stars'), { scale: 1.2, opacity: 0.2, duration: 1 }, 0)
-        .to(q('videoBg'), { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.7);
+        .to(q('scrollHint'), { opacity: 0, duration: 0.1 }, 0)
+        .to(q('body'), { y: -60, opacity: 0.25, duration: 1 }, 0)
+        .to(q('stars'), { scale: 1.1, opacity: 0.3, duration: 1 }, 0);
     }, root);
     return () => ctx.revert();
   }, []);
@@ -52,7 +43,7 @@ export default function Hero() {
       <div className={styles.videoBg} aria-hidden="true">
         <video
           className={styles.videoEl}
-          src="/assets/generation.mp4"
+          src="/assets/hero-cpu-poweron.mp4"
           autoPlay
           muted
           loop

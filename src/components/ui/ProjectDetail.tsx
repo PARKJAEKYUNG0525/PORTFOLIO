@@ -175,7 +175,7 @@ export default function ProjectDetail({ index, onClose, onNext, onPrev }: Props)
                   onClick={togglePlay}
                   aria-label={paused ? '재생' : '일시정지'}
                 >
-                  {paused ? '▶ Play' : '❚❚ Pause'}
+                  <span aria-hidden="true">{paused ? '▶' : '❚❚'}</span>
                 </button>
                 <button type="button" className="pill pill--sm" onClick={() => seek(10)} aria-label="10초 앞으로">
                   10s »
