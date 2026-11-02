@@ -14,23 +14,25 @@ export function useReveal(root: RefObject<HTMLElement | null>) {
   useLayoutEffect(() => {
     if (prefersReducedMotion() || !root.current) return;
     const ctx = gsap.context(() => {
+      // 애플 제품 페이지처럼: 크게 올라오며 길고 부드럽게 감속 (expo.out)
       gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((el) => {
+        const heading = /^H[1-3]$/.test(el.tagName);
         gsap.from(el, {
-          y: 36,
+          y: heading ? 80 : 50,
           opacity: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          duration: heading ? 1.6 : 1.3,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
         });
       });
       gsap.utils.toArray<HTMLElement>('[data-reveal-group]').forEach((group) => {
         gsap.from(group.children, {
-          y: 40,
+          y: 60,
           opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.08,
-          scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+          duration: 1.3,
+          ease: 'expo.out',
+          stagger: 0.09,
+          scrollTrigger: { trigger: group, start: 'top 88%', once: true },
         });
       });
     }, root);

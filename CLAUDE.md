@@ -106,7 +106,10 @@ index.html
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173)
-- `npm run build` — production build (`tsc && vite build`)
+- `npm run build` — production build (`tsc && node scripts/build.mjs`)
+  - Why the script: on Windows, Node 24's `fs.rmSync` crashes (0xC0000409) on non-ASCII paths like `04. 공부`,
+    and Vite calls it to empty `dist/`. The script clears `dist/` with unlink/rmdir and builds with `emptyOutDir: false`.
+    Don't switch back to plain `vite build`, and don't use `fs.rmSync`/`fs.cpSync` in tooling here.
 - `npm run preview` — preview the production build
 
 ## Deployment

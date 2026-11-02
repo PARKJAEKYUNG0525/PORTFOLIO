@@ -27,6 +27,13 @@
 }
 .photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 
+/* 모바일: 사진을 작게, 텍스트 아래 왼쪽 정렬로 */
+@media (max-width: 600px) {
+  .top { gap: 0 24px; }
+  .photoWrap { width: 120px; align-self: flex-start; margin-bottom: 40px; border-radius: var(--radius-md); }
+  .sub { margin-bottom: 32px; }
+}
+
 .grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
   background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);

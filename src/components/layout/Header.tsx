@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { PROFILE } from '../../data/profile';
 import { onAnchorClick } from '../../hooks/useLenis';
 import styles from './Header.module.css';
@@ -9,8 +10,17 @@ const LINKS = [
 ];
 
 export default function Header() {
+  // 스크롤되면 반투명 배경을 깔아 본문과 겹쳐 보이지 않게 함
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header}${scrolled ? ` ${styles.scrolled}` : ''}`}>
       <a href="#top" className={styles.brand} onClick={onAnchorClick} aria-label={`${PROFILE.name} — 맨 위로`}>
         <span className={styles.dot} aria-hidden="true" />
         <span>{PROFILE.name}</span>

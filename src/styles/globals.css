@@ -33,7 +33,9 @@
 
 /* ── Reset ───────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: clip; }
+/* iOS Safari는 body overflow-x: hidden만으로 가로 스크롤이 막히지 않아 clip을 함께 사용 */
+@supports not (overflow-x: clip) { html { overflow-x: hidden; } }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
@@ -45,7 +47,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   word-break: keep-all;       /* 한국어 단어 중간 줄바꿈 방지 */
   overflow-wrap: break-word;
 }
@@ -104,7 +106,19 @@ img, video { display: block; max-width: 100%; }
 
 .chip {
   padding: 6px 12px; border: 1px solid rgba(255,255,255,0.14); border-radius: var(--radius-pill);
-  font-size: 14px; color: var(--text-strong); white-space: nowrap;
+  font-size: 14px; color: var(--text-strong);
+  max-width: 100%;            /* 긴 태그가 화면 폭을 넘지 않도록 줄바꿈 허용 */
+}
+
+/* ── Small phones (≤380px) ───────────────── */
+@media (max-width: 380px) {
+  :root { --gutter: 16px; }
+  .pill { padding: 12px 18px; font-size: 14px; }
+  .pill--sm { padding: 8px 13px; font-size: 13px; }
+  .chip { font-size: 13px; padding: 5px 10px; }
+  .h-display { font-size: clamp(38px, 12vw, 44px); }
+  .h-section { font-size: clamp(32px, 10vw, 36px); }
+  .lead { font-size: 16px; }
 }
 
 /* ── Accessibility ───────────────────────── */

@@ -11,7 +11,12 @@
   position: absolute !important; inset: 0; background: rgba(255, 255, 255, 0.03);
   opacity: 0; transition: opacity .25s; pointer-events: none;
 }
-.card:hover .hoverBg { opacity: 1; }
+/* 터치 기기에서 hover 상태가 남지 않도록 마우스 환경에서만 적용 */
+@media (hover: hover) {
+  .card:hover .hoverBg { opacity: 1; }
+  .card:hover .arrow { background: var(--text); color: var(--bg); transform: translateX(4px); }
+}
+.card:active .hoverBg { opacity: 1; }
 
 .no { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); }
 
@@ -29,8 +34,6 @@
   display: grid; place-items: center; color: var(--text); font-size: 14px;
   transition: background .25s, color .25s, transform .25s;
 }
-.card:hover .arrow { background: var(--text); color: var(--bg); transform: translateX(4px); }
-
 .tags { display: none; }
 
 /* 모바일: 캐러셀 카드 */
@@ -38,10 +41,18 @@
   .card {
     flex: 0 0 84%; scroll-snap-align: start;
     grid-template-columns: 1fr; gap: 18px; align-content: start;
-    padding: 24px 20px; min-height: 400px;
+    padding: 24px 20px; min-height: min(400px, 70svh);
     border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-raise);
   }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .tags span { font-size: 12px; padding: 3px 9px; color: var(--text-2); }
   .end { justify-content: space-between; align-self: end; }
+  .name { font-size: clamp(28px, 9vw, 36px); }
+}
+
+/* 태블릿: 4열 → 지표 열을 이름 아래로 */
+@media (min-width: 721px) and (max-width: 1024px) {
+  .card { grid-template-columns: 48px minmax(0, 1fr) auto; }
+  .metricWrap { grid-column: 2; grid-row: 2; }
+  .end { grid-column: 3; grid-row: 1 / span 2; }
 }

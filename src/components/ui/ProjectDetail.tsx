@@ -10,10 +10,11 @@ interface Props {
   index: number;
   onClose: () => void;
   onNext: () => void;
+  onPrev: () => void;
 }
 
 /** 프로젝트 상세 — 오른쪽에서 슬라이드 인 하는 패널 */
-export default function ProjectDetail({ index, onClose, onNext }: Props) {
+export default function ProjectDetail({ index, onClose, onNext, onPrev }: Props) {
   const p = PROJECTS[index];
   const panel = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -82,9 +83,13 @@ export default function ProjectDetail({ index, onClose, onNext }: Props) {
       >
         <div className={styles.bar}>
           <span className={styles.barLabel}>
-            {pad(index + 1)} / {pad(PROJECTS.length)} · A PROJECT BY 박재경
+            {pad(index + 1)} / {pad(PROJECTS.length)}
+            <span className={styles.barBy}> · A PROJECT BY 박재경</span>
           </span>
           <div className={styles.barActions}>
+            <button type="button" className="pill pill--sm" onClick={onPrev}>
+              ← Prev
+            </button>
             <button type="button" className="pill pill--sm" onClick={onNext}>
               Next →
             </button>
@@ -240,9 +245,14 @@ export default function ProjectDetail({ index, onClose, onNext }: Props) {
             ))}
           </section>
 
-          <button type="button" className={`pill ${styles.nextBtn}`} onClick={onNext}>
-            다음 프로젝트 · {PROJECTS[(index + 1) % PROJECTS.length].name} →
-          </button>
+          <div className={styles.navBtns}>
+            <button type="button" className="pill" onClick={onPrev}>
+              ← {PROJECTS[(index - 1 + PROJECTS.length) % PROJECTS.length].name}
+            </button>
+            <button type="button" className="pill" onClick={onNext}>
+              {PROJECTS[(index + 1) % PROJECTS.length].name} →
+            </button>
+          </div>
         </motion.div>
       </motion.div>
     </>

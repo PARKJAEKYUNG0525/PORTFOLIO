@@ -101,13 +101,24 @@
 .trResult .trLbl { color: var(--accent); }
 .trResult .trTxt { color: var(--text); font-weight: 500; }
 
-.nextBtn { align-self: flex-start; }
+.navBtns { display: flex; gap: 12px; flex-wrap: wrap; }
 
 @media (max-width: 720px) {
-  .panel { width: 100vw; border-left: 0; }
-  .body { gap: 56px; }
+  .panel { width: 100%; border-left: 0; box-shadow: none; }
+  .body { gap: 56px; padding-top: 40px; padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+  .psrItem { padding: 22px; }
+  .h3 { font-size: clamp(28px, 8vw, 36px); }
+  .plTitle { font-size: 20px; }
+  .trTitle { font-size: 19px; }
+  .trTxt { font-size: 15px; }
+  .trBody > div { grid-template-columns: 44px minmax(0, 1fr); }
+  .stackRow { grid-template-columns: 88px minmax(0, 1fr); }
+  .steps { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-  .barLabel { font-size: 10px; }
+  .barLabel { font-size: 11px; }
+  .barBy { display: none; }
   .barActions > button { padding: 8px 12px; font-size: 13px; }
+  .title { font-size: clamp(44px, 14vw, 56px); }
+  .summary { font-size: 17px; }
 }

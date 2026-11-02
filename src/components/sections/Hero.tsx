@@ -1,42 +1,136 @@
-import { useLayoutEffect, useRef } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROFILE } from '../../data/profile';
 import { PROJECTS } from '../../data/projects';
 import { onAnchorClick, prefersReducedMotion } from '../../hooks/useLenis';
-import { Orbit, Stars } from '../ui/Orbit';
+import { Stars } from '../ui/Orbit';
+import { detectQuality, hasWebGL, orbitLayout, orbitState, type OrbitQuality } from '../ui/orbitState';
 import styles from './Hero.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
+
+// three.js는 무거우므로 첫 화면 이후 별도 청크로 로드
+const OrbitScene = lazy(() => import('../ui/OrbitScene'));
+
+const STATIC_SRC = '/assets/orbit-static.webp';
 
 export default function Hero({ onOpen }: { onOpen: (i: number) => void }) {
   const root = useRef<HTMLElement>(null);
+  const [use3D, setUse3D] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [active, setActive] = useState(true);
+  const [quality, setQuality] = useState<OrbitQuality>('high');
+  const [box, setBox] = useState({ w: 1440, h: 900 });
+
+  // 3D 사용 여부 결정: reduced-motion · WebGL 미지원이면 정적 이미지
+  useEffect(() => {
+    setQuality(detectQuality());
+    setUse3D(!prefersReducedMotion() && hasWebGL());
+  }, []);
+
+  // Hero 크기 추적 → 정적 이미지 위치를 3D와 같은 규칙으로 계산
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setBox({ w: el.clientWidth, h: el.clientHeight }));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // 화면 밖이면 렌더 루프 정지 (pin이 끝난 뒤)
+  useEffect(() => {
+    const el = root.current;
+    if (!el || !use3D) return;
+    const io = new IntersectionObserver(([en]) => setActive(en.isIntersecting), { rootMargin: '100px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [use3D]);
+
+  // 마우스 패럴랙스 (정밀 포인터에서만)
+  useEffect(() => {
+    if (!use3D || !window.matchMedia('(pointer: fine)').matches) return;
+    const onMove = (e: PointerEvent) => {
+      orbitState.px = (e.clientX / window.innerWidth) * 2 - 1;
+      orbitState.py = (e.clientY / window.innerHeight) * 2 - 1;
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, [use3D]);
 
   useLayoutEffect(() => {
     if (prefersReducedMotion()) return;
-    const q = (k: keyof typeof styles) => `.${styles[k]}`;
+    const q = (k: string) => `.${styles[k]}`;
     const ctx = gsap.context(() => {
+      // 첫 진입: 아래에서 페이드업
       gsap
-        .timeline({ defaults: { ease: 'power3.out' } })
-        .from(q('orbitIn'), { opacity: 0, scale: 0.86, duration: 1.8, ease: 'power2.out' }, 0)
-        .from(`${q('eyebrow')} > span`, { y: 14, opacity: 0, duration: 0.7, stagger: 0.08 }, 0.15)
-        .from(`${q('line')} > span`, { yPercent: 110, duration: 1.1, stagger: 0.12 }, 0.25)
-        .from([q('role'), q('intro'), q('cta')], { y: 22, opacity: 0, duration: 0.9, stagger: 0.1 }, 0.65)
-        .from(q('stripItem'), { y: 16, opacity: 0, duration: 0.7, stagger: 0.08 }, 0.95);
+        .timeline({ defaults: { ease: 'expo.out' } })
+        .from(q('sceneIn'), { opacity: 0, scale: 0.9, duration: 2.2 }, 0)
+        .from(`${q('eyebrow')} > span`, { y: 20, opacity: 0, duration: 1.2, stagger: 0.08 }, 0.15)
+        .from(`${q('line')} > span`, { yPercent: 110, duration: 1.4, stagger: 0.12 }, 0.25)
+        .from([q('role'), q('intro'), q('cta')], { y: 32, opacity: 0, duration: 1.3, stagger: 0.1 }, 0.6)
+        .from(q('stripItem'), { y: 20, opacity: 0, duration: 1, stagger: 0.08 }, 0.9);
 
-      // 스크롤 시 궤도가 뒤로 물러나고 본문이 흐려지는 패럴랙스
-      const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true };
-      gsap.to(q('orbit'), { yPercent: 18, scale: 0.82, opacity: 0.35, ease: 'none', scrollTrigger: st });
-      gsap.to(q('body'), { y: -60, opacity: 0.2, ease: 'none', scrollTrigger: { ...st } });
+      // Hero pin: 스크롤하면 텍스트가 빠지고 3D 오브젝트가 중앙으로 회전·확대되며 다음 섹션으로 전환
+      const mobile = window.matchMedia('(max-width: 720px)').matches;
+      gsap
+        .timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top top',
+            end: mobile ? '+=90%' : '+=130%',
+            scrub: 0.8,
+            pin: true,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              orbitState.progress = self.progress;
+            },
+          },
+        })
+        .to(q('body'), { y: -90, opacity: 0, duration: 0.45, ease: 'power2.in' }, 0)
+        .to(q('stripWrap'), { y: 40, opacity: 0, duration: 0.35, ease: 'power2.in' }, 0)
+        .to(q('stars'), { scale: 1.2, opacity: 0.35, duration: 1 }, 0)
+        .to(q('scene'), { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.7);
     }, root);
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      orbitState.progress = 0;
+    };
   }, []);
+
+  const L = orbitLayout(box.w, box.h);
 
   return (
     <section id="top" ref={root} className={styles.hero} aria-label="소개">
       <div className={styles.stars} aria-hidden="true">
         <Stars />
       </div>
-      <div className={styles.orbit} aria-hidden="true">
-        <div className={styles.orbitIn}>
-          <Orbit />
+
+      <div className={styles.scene} aria-hidden="true">
+        <div className={styles.sceneIn}>
+          {/* 정적 대체 이미지: reduced-motion · WebGL 미지원 · 3D 로딩 전 */}
+          <img
+            src={STATIC_SRC}
+            alt=""
+            className={styles.staticImg}
+            style={{
+              left: L.cx - L.size / 2,
+              top: L.cy - L.size / 2,
+              width: L.size,
+              height: L.size,
+              opacity: use3D && ready ? 0 : 1,
+            }}
+            decoding="async"
+            fetchPriority="high"
+          />
+          {use3D && (
+            <Suspense fallback={null}>
+              <div className={styles.canvas} style={{ opacity: ready ? 1 : 0 }}>
+                <OrbitScene quality={quality} active={active} onReady={() => setReady(true)} />
+              </div>
+            </Suspense>
+          )}
         </div>
       </div>
 

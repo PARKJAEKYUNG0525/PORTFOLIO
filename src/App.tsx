@@ -25,6 +25,7 @@ export default function App() {
   }, []);
   const close = useCallback(() => setActive(-1), []);
   const next = useCallback(() => setActive((i) => (i + 1) % PROJECTS.length), []);
+  const prev = useCallback(() => setActive((i) => (i - 1 + PROJECTS.length) % PROJECTS.length), []);
 
   const isOpen = active >= 0;
   useEffect(() => {
@@ -35,10 +36,12 @@ export default function App() {
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [isOpen, close]);
+  }, [isOpen, close, next, prev]);
 
   return (
     <>
@@ -52,7 +55,7 @@ export default function App() {
         <Contact />
       </main>
       <AnimatePresence>
-        {isOpen && <ProjectDetail key="detail" index={active} onClose={close} onNext={next} />}
+        {isOpen && <ProjectDetail key="detail" index={active} onClose={close} onNext={next} onPrev={prev} />}
       </AnimatePresence>
     </>
   );

@@ -1,38 +1,7 @@
 import { memo, useMemo } from 'react';
 import styles from './Orbit.module.css';
 
-const RINGS = [
-  { size: 98, dur: 120, rev: false, dot: 6, tilt: 20 },
-  { size: 78, dur: 80, rev: true, dot: 10, tilt: 140 },
-  { size: 60, dur: 55, rev: false, dot: 5, tilt: 260 },
-];
-
-/** 히어로 궤도 비주얼 — CSS만으로 회전 */
-export const Orbit = memo(function Orbit() {
-  return (
-    <div className={styles.orbit}>
-      {RINGS.map((r) => (
-        <div
-          key={r.size}
-          className={`${styles.ring}${r.rev ? ` ${styles.rev}` : ''}`}
-          style={{
-            width: `${r.size}%`,
-            height: `${r.size}%`,
-            marginLeft: `${-r.size / 2}%`,
-            marginTop: `${-r.size / 2}%`,
-            animationDuration: `${r.dur}s`,
-            rotate: `${r.tilt}deg`,
-          }}
-        >
-          <span className={styles.moon} style={{ left: -r.dot / 2, width: r.dot, height: r.dot, marginTop: -r.dot / 2 }} />
-        </div>
-      ))}
-      <div className={styles.planet} />
-    </div>
-  );
-});
-
-/** 고정 시드 별 배경 (렌더마다 위치 동일) */
+/** 고정 시드 별 배경 (렌더마다 위치 동일). 3D 오브젝트는 OrbitScene.tsx */
 export const Stars = memo(function Stars({ count = 70 }: { count?: number }) {
   const stars = useMemo(() => {
     let s = 7;
