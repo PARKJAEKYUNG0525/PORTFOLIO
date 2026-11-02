@@ -10,9 +10,9 @@ const DIST = 10;
 const OUTER = 2.3;
 
 const RINGS = [
-  { r: 1.6, tilt: [1.25, 0.15, 0.2], speed: 0.35, moon: 0.05 },
-  { r: 1.95, tilt: [1.4, -0.35, 0.9], speed: -0.22, moon: 0.075 },
-  { r: 2.25, tilt: [1.1, 0.45, -0.6], speed: 0.14, moon: 0.04 },
+  { r: 1.6, tilt: [1.25, 0.15, 0.2], speed: 0.35, moon: 0.032 },
+  { r: 1.95, tilt: [1.4, -0.35, 0.9], speed: -0.22, moon: 0.048 },
+  { r: 2.25, tilt: [1.1, 0.45, -0.6], speed: 0.14, moon: 0.028 },
 ] as const;
 
 const smoothstep = (t: number) => t * t * (3 - 2 * t);
@@ -66,26 +66,26 @@ function Planet({ quality, snapshot }: { quality: OrbitQuality; snapshot: boolea
             resolution={low ? 256 : 768}
             backside={!low}
             backsideThickness={0.5}
-            thickness={1.2}
+            thickness={0.55}
             transmission={1}
-            roughness={0.06}
-            ior={1.32}
-            chromaticAberration={low ? 0.03 : 0.07}
-            anisotropy={0.15}
-            distortion={0.18}
-            distortionScale={0.35}
-            temporalDistortion={snapshot ? 0 : 0.06}
+            roughness={0.04}
+            ior={1.18}
+            chromaticAberration={low ? 0.03 : 0.06}
+            anisotropy={0.1}
+            distortion={0.12}
+            distortionScale={0.3}
+            temporalDistortion={snapshot ? 0 : 0.05}
             clearcoat={1}
-            clearcoatRoughness={0.05}
-            attenuationDistance={3}
-            attenuationColor="#b9dcff"
-            color="#eef6ff"
+            clearcoatRoughness={0.04}
+            attenuationDistance={6}
+            attenuationColor="#d6ebff"
+            color="#ffffff"
           />
         </mesh>
         {/* 내부 코어 — 유리를 통해 굴절되어 보임 */}
         <mesh>
-          <sphereGeometry args={[0.62, low ? 32 : 64, low ? 32 : 64]} />
-          <meshStandardMaterial color="#3b74b8" emissive="#2c6fd1" emissiveIntensity={0.55} roughness={0.35} metalness={0.1} />
+          <sphereGeometry args={[0.46, low ? 32 : 64, low ? 32 : 64]} />
+          <meshStandardMaterial color="#6d9fdc" emissive="#1d5bbf" emissiveIntensity={0.45} roughness={0.25} metalness={0.2} />
         </mesh>
       </group>
 
@@ -98,7 +98,7 @@ function Planet({ quality, snapshot }: { quality: OrbitQuality; snapshot: boolea
             </mesh>
             <mesh position={[ring.r, 0, 0]}>
               <sphereGeometry args={[ring.moon, 24, 24]} />
-              <meshStandardMaterial color="#ffffff" emissive="#9fd0ff" emissiveIntensity={1.6} />
+              <meshStandardMaterial color="#ffffff" emissive="#9fd0ff" emissiveIntensity={1.1} />
             </mesh>
           </group>
         </group>
@@ -138,10 +138,10 @@ export default function OrbitScene({ quality, active = true, snapshot = false, o
 
       {/* 로컬 라이트포머로 만든 환경맵 — 외부 HDR 다운로드 없음 */}
       <Environment resolution={low ? 128 : 256} frames={1}>
-        <Lightformer form="rect" intensity={2.2} position={[0, 5, -3]} scale={[10, 2, 1]} color="#ffffff" />
-        <Lightformer form="rect" intensity={1.4} position={[-5, 0, 2]} rotation-y={Math.PI / 2} scale={[6, 2, 1]} color="#9cc8ff" />
-        <Lightformer form="rect" intensity={1} position={[5, -1, 1]} rotation-y={-Math.PI / 2} scale={[6, 2, 1]} color="#7fe3ff" />
-        <Lightformer form="ring" intensity={1.6} position={[2, 2, 4]} scale={1.6} color="#ffffff" />
+        <Lightformer form="circle" intensity={1.6} position={[0, 6, -2]} scale={[8, 8, 1]} color="#ffffff" />
+        <Lightformer form="rect" intensity={0.9} position={[-5, 0, 2]} rotation-y={Math.PI / 2} scale={[8, 3, 1]} color="#8ec2ff" />
+        <Lightformer form="rect" intensity={0.6} position={[5, -1, 1]} rotation-y={-Math.PI / 2} scale={[8, 3, 1]} color="#7fe3ff" />
+        <Lightformer form="ring" intensity={0.9} position={[2.5, 2, 5]} scale={1.2} color="#ffffff" />
       </Environment>
 
       <Planet quality={quality} snapshot={snapshot} />
