@@ -2,20 +2,20 @@
 
 /* ── Design Tokens ───────────────────────── */
 :root {
-  --bg:          #0a0c0f;
-  --bg-2:        #111418;
-  --bg-raise:    #0d1014;
-  --text:        #eceef0;
-  --text-strong: #d6dade;
-  --text-soft:   #c4c9cf;
-  --text-2:      #a3a9b1;
-  --text-3:      #8b9199;
-  --accent:      oklch(0.82 0.1 235);
-  --accent-2:    oklch(0.86 0.09 235);
-  --accent-bg:   oklch(0.82 0.1 235 / 0.14);
-  --border:      rgba(255, 255, 255, 0.11);
-  --border-soft: rgba(255, 255, 255, 0.08);
-  --border-2:    rgba(255, 255, 255, 0.18);
+  --bg:          #080706;
+  --bg-2:        #100e0c;
+  --bg-raise:    #161210;
+  --text:        #ede8e0;
+  --text-strong: #d8d2c8;
+  --text-soft:   #c2bbb0;
+  --text-2:      #9c9288;
+  --text-3:      #6e6460;
+  --accent:      #d4841a;
+  --accent-2:    #e89c2c;
+  --accent-bg:   rgba(212, 132, 26, 0.14);
+  --border:      rgba(255, 240, 210, 0.10);
+  --border-soft: rgba(255, 240, 210, 0.07);
+  --border-2:    rgba(255, 240, 210, 0.17);
 
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -57,7 +57,7 @@ a:hover { color: var(--accent); }
 button { font: inherit; color: inherit; }
 img, video { display: block; max-width: 100%; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-::selection { background: oklch(0.82 0.1 235 / 0.35); }
+::selection { background: rgba(212, 132, 26, 0.38); }
 
 /* ── Shared atoms ────────────────────────── */
 .label {

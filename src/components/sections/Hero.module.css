@@ -4,13 +4,23 @@
   padding: 120px var(--gutter) 40px; overflow: hidden;
 }
 
-.stars { position: absolute; inset: 0; pointer-events: none; }
+.stars { position: absolute; inset: 0; pointer-events: none; opacity: 0.4; }
 
-/* 3D 오브젝트 레이어 — Hero 전체를 덮고, 오브젝트 위치는 orbitLayout()이 결정 */
-.scene { position: absolute; inset: 0; pointer-events: none; }
-.sceneIn { position: absolute; inset: 0; }
-.canvas { position: absolute; inset: 0; transition: opacity .8s ease; }
-.cssOrbit { position: absolute; max-width: none; transition: opacity .8s ease; user-select: none; pointer-events: none; }
+/* Higgsfield 영상 배경 */
+.videoBg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.videoEl {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center 20%;
+}
+.videoOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(8, 7, 6, 0.62) 0%,
+    rgba(8, 7, 6, 0.30) 45%,
+    rgba(8, 7, 6, 0.78) 100%
+  );
+}
 
 .body { position: relative; max-width: 760px; display: flex; flex-direction: column; gap: 28px; }
 
@@ -33,15 +43,17 @@
 }
 .stripItem {
   all: unset; cursor: pointer; display: flex; gap: 14px; align-items: baseline;
-  padding: 18px 4px; background: var(--bg); transition: background .2s;
+  padding: 18px 4px; background: rgba(8, 7, 6, 0.82);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: background .2s;
 }
-.stripItem:hover { background: var(--bg-2); }
+.stripItem:hover { background: rgba(16, 14, 12, 0.92); }
 .stripItem:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .stripNo { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
 .stripName { font-weight: 600; font-size: 16px; }
 .stripKind { font-size: 13px; color: var(--text-3); }
 
 @media (max-width: 720px) {
-  .scene { opacity: .6; }
+  .videoBg { opacity: .85; }
   .stripWrap { padding-top: 48px; }
 }
