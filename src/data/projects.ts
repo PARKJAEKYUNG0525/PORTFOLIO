@@ -39,6 +39,8 @@ export interface Project {
   metric: string;
   metricLabel: string;
   summary: string;
+  /** 상세 화면 · 영상 아래 프로젝트 소개 */
+  intro: string;
   tags: string[];
   meta: KV[];
   problem: string;
@@ -71,6 +73,8 @@ export const PROJECTS: Project[] = [
       { k: 'ROLE', v: '모듈 C 갭 탐지, 리포트 화면, Slack 연동' },
       { k: 'GITHUB', v: 'AI-X-16-1/AUTUNE' },
     ],
+    intro:
+      '회의 녹음을 대본으로 바꾸고 할 일 · 결정 추출, 빠진 논의 탐지, 과거 회의와의 맥락 연결을 거쳐 회의 등급과 주간 리포트까지 만드는 5개 모듈 서비스. 동의한 참석자의 발화만 분석하고 결과는 Slack 팀 채널로 전달. 그중 회의 유형별 팀 템플릿과 대조해 빠진 논의를 위험도 순으로 알리는 갭 탐지 모듈 담당.',
     problem: '회의가 끝나면 무엇을 정했고 무엇을 놓쳤는지 흐려집니다.',
     solution: '녹음에서 할 일, 빠진 논의, 번복된 결정을 찾아 팀에 알립니다. 동의한 참석자의 발화만 분석합니다.',
     flow: '음성 → 대본 → 할 일·결정 추출 → 누락 논의 탐지 → 회의 간 맥락 연결 → 인텔리전스, 5개 모듈 파이프라인',
@@ -157,8 +161,8 @@ export const PROJECTS: Project[] = [
     kindEn: 'POLICY MATCHING · TEAM PROJECT',
     role: 'PM(팀장)',
     period: '2026.06 — 08',
-    metric: 'Rule Engine + RAG',
-    metricLabel: 'bge-m3 · FAISS · LLM Rerank · RAGAS',
+    metric: 'Rule Engine + Parent-Child RAG + LLM',
+    metricLabel: 'Docling · bge-m3 · FAISS / pgvector · LLM Rerank · RAGAS',
     summary:
       '부처와 지자체별로 흩어진 4,000여 건의 청년정책을 사용자 상황에 맞춰 찾아주는 Rule Engine + RAG 기반 서비스.',
     tags: ['React', 'FastAPI', 'bge-m3', 'FAISS', 'watsonx LLM', 'RAGAS', 'MySQL', 'AWS ECS'],
@@ -168,6 +172,8 @@ export const PROJECTS: Project[] = [
       { k: 'ROLE', v: 'PM(팀장) · 상황매칭 · 맞춤정책 추천' },
       { k: 'SCALE', v: '청년정책 4,000여 건' },
     ],
+    intro:
+      '부처 · 지자체별로 흩어진 청년정책 4,000여 건을 한곳에서 찾는 정책 매칭 서비스. 상황을 문장으로 입력하면 Rule Engine이 8개 조건으로 자격을 거르고, RAG 검색과 LLM이 질문 의도에 맞는 정책을 골라 근거와 함께 안내. PDF 공고문 분석, 카카오맵 기반 지역 혜택 검색 제공. PM으로 팀을 이끌며 매칭 · 추천 파이프라인과 AWS 배포 담당.',
     problem: '자격 조건이 정책마다 제각각이라 받을 수 있는 혜택을 찾기 어렵습니다.',
     solution: '상황을 문장으로 입력받아 자격을 판정하고, 지금 신청 가능한 정책을 추천합니다.',
     flow: '상황 입력 → Rule Engine 8개 조건 → bge-m3 Top-10 → LLM 후보 선택 → 추천',
@@ -282,6 +288,8 @@ export const PROJECTS: Project[] = [
       { k: 'ROLE', v: '음성 대화 분석 (STT · LLM 요약)' },
       { k: 'GITHUB', v: 'AI-X-16-1/CARD-N' },
     ],
+    intro:
+      '명함을 촬영해 인물을 등록하고, 그 사람과 나눈 대화를 녹음하면 요약과 후속 할 일까지 인물 기록에 연결하는 인맥 관리 서비스. 다음 만남 전에 명함 정보, 지난 대화, 관계도를 한 화면에서 확인. 대화 녹음을 텍스트로 바꾸고 Gemini로 관심사 · 주제 · 후속 할 일을 추출하는 음성 대화 분석 파트 담당.',
     problem: '명함은 쌓이는데 “이 사람과 무슨 이야기를 했는지”는 남지 않습니다.',
     solution: '명함 정보 · 대화 기록 · 관계도를 한곳에 모아 다음 만남에서 바로 조회합니다.',
     flow: '명함 촬영 → 인물 등록 → 대화 녹음(STT) → 요약 · 핵심 추출 → 인물 기록 연결',

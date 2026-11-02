@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { PROJECTS } from '../../data/projects';
 import styles from './ProjectDetail.module.css';
@@ -18,13 +18,30 @@ export default function ProjectDetail({ index, onClose, onNext, onPrev }: Props)
   const p = PROJECTS[index];
   const panel = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
 
   // 프로젝트 전환 시 맨 위로 + 닫기 버튼에 포커스
   useEffect(() => {
     panel.current?.scrollTo({ top: 0 });
     closeBtn.current?.focus({ preventScroll: true });
+    setPaused(false);
   }, [index]);
+
+  /** 영상 ±초 이동 (0 ~ 길이 범위로 제한) */
+  const seek = (delta: number) => {
+    const v = video.current;
+    if (!v || !Number.isFinite(v.duration)) return;
+    v.currentTime = Math.min(Math.max(v.currentTime + delta, 0), Math.max(v.duration - 0.1, 0));
+  };
+
+  const togglePlay = () => {
+    const v = video.current;
+    if (!v) return;
+    if (v.paused) void v.play();
+    else v.pause();
+  };
 
   // 포커스 트랩
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -133,22 +150,48 @@ export default function ProjectDetail({ index, onClose, onNext, onPrev }: Props)
           </motion.div>
 
           {p.video ? (
-            <motion.div className={styles.shot} {...fade}>
-              <video
-                className={styles.shotVideo}
-                src={p.video}
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-label={`${p.name} 시연 영상`}
-              />
+            <motion.div className={styles.shotWrap} {...fade}>
+              <div className={styles.shot}>
+                <video
+                  ref={video}
+                  className={styles.shotVideo}
+                  src={p.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  aria-label={`${p.name} 시연 영상`}
+                  onPlay={() => setPaused(false)}
+                  onPause={() => setPaused(true)}
+                />
+              </div>
+              <div className={styles.vCtrl} role="group" aria-label="영상 컨트롤">
+                <button type="button" className="pill pill--sm" onClick={() => seek(-10)} aria-label="10초 뒤로">
+                  « 10s
+                </button>
+                <button
+                  type="button"
+                  className="pill pill--sm"
+                  onClick={togglePlay}
+                  aria-label={paused ? '재생' : '일시정지'}
+                >
+                  {paused ? '▶ Play' : '❚❚ Pause'}
+                </button>
+                <button type="button" className="pill pill--sm" onClick={() => seek(10)} aria-label="10초 앞으로">
+                  10s »
+                </button>
+              </div>
             </motion.div>
           ) : (
             <motion.div className={styles.shot} {...fade} role="img" aria-label={`${p.name} 화면 (준비 중)`}>
               <span className={styles.shotName}>{p.name}</span>
             </motion.div>
           )}
+
+          <motion.section className={styles.intro} {...fade} aria-labelledby="detail-intro">
+            <span id="detail-intro" className="eyebrow">OVERVIEW · 프로젝트 소개</span>
+            <p className={styles.introText}>{p.intro}</p>
+          </motion.section>
 
           <div className={styles.psr}>
             {psr.map((x) => (

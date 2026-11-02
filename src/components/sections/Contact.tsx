@@ -1,4 +1,4 @@
-import { CONTACTS, PROFILE } from '../../data/profile';
+import { CONTACTS, PROFILE, PROFILE_INFO } from '../../data/profile';
 import { onAnchorClick } from '../../hooks/useLenis';
 import styles from './Contact.module.css';
 
@@ -12,13 +12,21 @@ export default function Contact() {
             <span>04</span>
           </div>
           <h2 id="contact-title" className={`h-display ${styles.heading}`} data-reveal>
-            다음에 만들 것을,
+            기술을 이해하고,
             <br />
-            함께.
+            가치를 구현합니다.
           </h2>
           <p className={`lead ${styles.sub}`} data-reveal>
             AI 서비스 개발 · 기술지원/솔루션 엔지니어 · SI/구축 포지션을 찾고 있습니다.
           </p>
+          <dl className={styles.info} data-reveal-group>
+            {PROFILE_INFO.map((x) => (
+              <div key={x.k} className={styles.infoRow}>
+                <dt className={styles.itemLabel}>{x.k}</dt>
+                <dd className={styles.infoVal}>{x.v}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
         <div className={styles.photoWrap} data-reveal>
           <img src="/assets/profile.jpg" alt={`${PROFILE.name} 프로필 사진`} className={styles.photo} />

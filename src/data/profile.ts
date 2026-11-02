@@ -36,6 +36,14 @@ export const CERTS = [
   { name: '컴퓨터활용능력 2급', date: '2025.10', org: '대한상공회의소' },
 ];
 
+// Contact 섹션 상단 · 기본 정보
+export const PROFILE_INFO = [
+  { k: 'NAME', v: '박재경 · Park Jaekyung' },
+  { k: 'POSITION', v: 'AI 서비스 개발 · 백엔드' },
+  { k: 'EDUCATION', v: '성결대학교 컴퓨터공학과 졸업' },
+  { k: 'LOCATION', v: '경기도 안양시' },
+];
+
 // 전화번호는 사이트에 노출하지 않음 (CLAUDE.md)
 export const CONTACTS = [
   { label: 'EMAIL', value: 'pjg0525@naver.com', href: 'mailto:pjg0525@naver.com', external: false },

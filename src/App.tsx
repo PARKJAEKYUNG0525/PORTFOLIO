@@ -48,7 +48,7 @@ export default function App() {
       <a href="#main" className="skip-link">본문으로 건너뛰기</a>
       <Header />
       <main id="main" ref={main} tabIndex={-1} style={{ outline: 'none' }} inert={isOpen || undefined}>
-        <Hero onOpen={open} />
+        <Hero />
         <Work onOpen={open} />
         <About />
         <Journey />

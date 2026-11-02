@@ -48,6 +48,12 @@
 }
 .shotName { font-size: clamp(40px, 8vw, 112px); font-weight: 700; letter-spacing: -0.05em; color: rgba(255,255,255,0.07); line-height: 1; }
 .shotVideo { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
+.shotWrap { display: flex; flex-direction: column; gap: 12px; }
+.vCtrl { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.vCtrl button { font-family: var(--font-mono); min-width: 88px; justify-content: center; }
+
+.intro { display: flex; flex-direction: column; gap: 16px; padding: 32px 0 8px; border-top: 1px solid var(--border); }
+.introText { margin: 0; max-width: 820px; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.75; color: var(--text-strong); text-wrap: pretty; word-break: keep-all; }
 
 .psr { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
 .psrItem { padding: 28px; border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 12px; }

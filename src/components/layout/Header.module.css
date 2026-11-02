@@ -23,7 +23,7 @@
   background: radial-gradient(circle at 32% 30%, #fff, var(--accent) 45%, #1b2a3a 100%);
 }
 
-.nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 32px); font-size: 14px; }
+.nav { margin-left: auto; display: flex; align-items: center; gap: clamp(14px, 2.4vw, 32px); font-size: 14px; }
 .link { color: var(--text-2); }
 .link:hover { color: var(--text); }
 
